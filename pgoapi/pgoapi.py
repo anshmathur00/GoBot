@@ -48,6 +48,7 @@ class PGoApi:
         self.log = logging.getLogger(__name__)
         self._start_pos = start_pos
         self._walk_count = 1
+        self.pokemon_caught = []
         self._auth_provider = None
         self._api_endpoint = None
         self.config = config
@@ -206,11 +207,11 @@ class PGoApi:
         self.log.debug("Nearby pokemon: : %s", pokemon_distances)
         for pokemon_distance in pokemon_distances:
             target = pokemon_distance
-            print (target)
-            #if (self.pokemon_names[0][1] not in self.POKEMON_TO_AVOID):
-            self.log.debug("Catching pokemon: : %s, distance: %f meters", target[0], target[1])
-            self.log.info("Catching Pokemon: %s", self.pokemon_names[str(target[0]['pokemon_id'])])
-            return self.encounter_pokemon(target[0])
+            print (self.pokemon_names[str(pokemon['pokemon_id'])])
+            if (self.pokemon_names[str(pokemon['pokemon_id'])]) not in (self.POKEMON_TO_AVOID):
+                self.log.debug("Catching pokemon: : %s, distance: %f meters", target[0], target[1])
+                self.log.info("Catching Pokemon: %s", self.pokemon_names[str(target[0]['pokemon_id'])])
+                return self.encounter_pokemon(target[0])
         return False
 
     def nearby_map_objects(self):
@@ -332,6 +333,7 @@ class PGoApi:
                 if capture_status == 1:
                     self.log.debug("Caught Pokemon: : %s", catch_attempt)
                     self.log.info("Caught Pokemon:  %s", self.pokemon_names[str(pokemon['pokemon_id'])])
+                    self.pokemon_caught.append(self.pokemon_names[str(pokemon['pokemon_id'])])
                     sleep(2) # If you want to make it faster, delete this line... would not recommend though
                     return catch_attempt
                 elif capture_status != 2:
