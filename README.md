@@ -41,8 +41,9 @@ Install instructions
         8) Go back to command prompt and run the command “python pokebot.py -i 0” if your account is gmail. Run “python pokebot.py -i 1” if you have a PTC
 
 Settings Changes
-	- If you want to immediately release some Pokemon, add their names with quotations (i.e. "Pidgey", "Rattata") to POKEMON_TO_AVOID in config.json
-	- If you want to increase the speed of your bot (not recommended), increase the STEP_SIZE. I think 300 is the maximum before they start soft banning.
+
+	1) If you want to immediately release some Pokemon, add their names with quotations (i.e. "Pidgey", "Rattata") to POKEMON_TO_AVOID in config.json
+	2) If you want to increase the speed of your bot (not recommended), increase the STEP_SIZE. I think 300 is the maximum before they start soft banning.
 
 
 
