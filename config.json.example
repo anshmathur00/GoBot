@@ -1,0 +1,30 @@
+{"accounts" :
+    [{
+        "auth_service": "google",
+        "username": "test@gmail.com",
+        "password": "password",
+        "location": "San Jose, CA",
+        "USE_GOOGLE": true,
+        "GMAPS_API_KEY": "INSERT_API_KEY_HERE",
+        "MIN_KEEP_IV" : 50,
+        "KEEP_CP_OVER": 100,
+        "RELEASE_DUPLICATE": false,
+        "DUPLICATE_CP_FOREGIVENESS": 0.1,
+        "STEP_SIZE": 100,
+        "RETURN_START_INTERVAL": 20
+    },
+    {  "auth_service": "ptc",
+        "username": "username",
+        "password": "password",
+        "location": "San Jose, CA",
+        "USE_GOOGLE": true,
+        "GMAPS_API": true,
+        "MIN_KEEP_IV" : 50,
+        "KEEP_CP_OVER": 200,
+        "RELEASE_DUPLICATE": true,
+        "DUPLICATE_CP_FOREGIVENESS":  0.1,
+        "STEP_SIZE": 100,
+        "RETURN_START_INTERVAL": 20,
+        "POKEMON_TO_AVOID": []
+    }
+    ]}

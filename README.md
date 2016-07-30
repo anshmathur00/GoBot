@@ -20,11 +20,11 @@ Install instructions
 		2) Open Terminal
 		3) Enter the command “cd Documents/Pokebot\ with\ mods/“
 		4) Run the command “pip install -r requirements.txt”
-		5) Open config.json
+		5) Open config.json.example
 		6) Enter your username, password, Google API key, and the location you want to bot in.
 			- if you are using a gmail account, enter the info into the first block. For PTC, second block
 			- for location, use GPS coordinates. Go to Google Maps and drop the arrow on your location for coords.
-		7) Save config.json
+		7) Save config.json.example as config.json
 		8) Go back to your terminal and navigate to the Pokebot folder
 		9) Run the command “python pokebot.py -i 0” if your account is gmail. Run “python pokebot.py -i 1” if you have a PTC
 
@@ -32,16 +32,21 @@ Install instructions
         1) Install the Visual C Compiler.
         2) Open Command Prompt
         3) Navigate to the Pokebot folder
-        4) Run "pip install -r requirements.txt"5) Open config.json
+        4) Run "pip install -r requirements.txt"5
+        5) Open config.json.example
         6) Enter your username, password, Google API key, and the location you want to bot in.
             - if you are using a gmail account, enter the info into the first block. For PTC, second block
             - for location, use GPS coordinates. Go to Google Maps and drop the arrow on your location for coords.
-        7) Save config.json
+        7) Save config.json.example as config.json
         8) Go back to command prompt and run the command “python pokebot.py -i 0” if your account is gmail. Run “python pokebot.py -i 1” if you have a PTC
-		
+
+Settings Changes
+	- If you want to immediately release some Pokemon, add their names with quotations (i.e. "Pidgey", "Rattata") to POKEMON_TO_AVOID in config.json
+	- If you want to increase the speed of your bot (not recommended), increase the STEP_SIZE. I think 300 is the maximum before they start soft banning.
+
+
 
 If anything doesn’t work, email me at anshmathur00@gmail.com
 
 TODO
 	Better transferring
-	Maybe replace the heartbeat API with something faster

@@ -130,6 +130,7 @@ class PGoApi:
             raise AttributeError
     def heartbeat(self):
         self.get_player()
+        #print(self.pokemon_caught)
         if self._heartbeat_number % 10 == 0:
             self.check_awarded_badges()
             self.get_inventory()
@@ -208,10 +209,9 @@ class PGoApi:
         for pokemon_distance in pokemon_distances:
             target = pokemon_distance
             print (self.pokemon_names[str(pokemon['pokemon_id'])])
-            if (self.pokemon_names[str(pokemon['pokemon_id'])]) not in (self.POKEMON_TO_AVOID):
-                self.log.debug("Catching pokemon: : %s, distance: %f meters", target[0], target[1])
-                self.log.info("Catching Pokemon: %s", self.pokemon_names[str(target[0]['pokemon_id'])])
-                return self.encounter_pokemon(target[0])
+            self.log.debug("Catching pokemon: : %s, distance: %f meters", target[0], target[1])
+            self.log.info("Catching Pokemon: %s", self.pokemon_names[str(target[0]['pokemon_id'])])
+            return self.encounter_pokemon(target[0])
         return False
 
     def nearby_map_objects(self):
@@ -254,12 +254,12 @@ class PGoApi:
             if len(pokemons) > MIN_SIMILAR_POKEMON:
                 pokemons = sorted(pokemons, lambda x,y: cmp(x['cp'],y['cp']),reverse=True)
                 for pokemon in pokemons[MIN_SIMILAR_POKEMON:]:
-                    if 'cp' in pokemon and pokemonIVPercentage(pokemon) < self.MIN_KEEP_IV and pokemon['cp'] < self.KEEP_CP_OVER:
-                        if pokemon['pokemon_id'] == 16:
-                            for inventory_item in inventory_items:
-                                if "pokemon_family" in inventory_item['inventory_item_data'] and inventory_item['inventory_item_data']['pokemon_family']['family_id'] == 16 and inventory_item['inventory_item_data']['pokemon_family']['candy'] > 11:
-                                  self.log.info("Evolving pokemon: %s", self.pokemon_names[str(pokemon['pokemon_id'])])
-                                  self.evolve_pokemon(pokemon_id = pokemon['id'])
+                    if self.pokemon_names[str(pokemon['pokemon_id'])] in self.POKEMON_TO_AVOID:
+                        self.log.debug("Releasing pokemon: %s", pokemon)
+                        self.log.info("Releasing pokemon: %s IV: %s", self.pokemon_names[str(pokemon['pokemon_id'])], pokemonIVPercentage(pokemon))
+                        self.release_pokemon(pokemon_id = pokemon["id"])      
+
+                    elif 'cp' in pokemon and pokemonIVPercentage(pokemon) < self.MIN_KEEP_IV and pokemon['cp'] < self.KEEP_CP_OVER:
                         self.log.debug("Releasing pokemon: %s", pokemon)
                         self.log.info("Releasing pokemon: %s IV: %s", self.pokemon_names[str(pokemon['pokemon_id'])], pokemonIVPercentage(pokemon))
                         self.release_pokemon(pokemon_id = pokemon["id"])
@@ -272,13 +272,11 @@ class PGoApi:
                     for pokemon in pokemons[MIN_SIMILAR_POKEMON:]:
                         if self.pokemon_names[str(pokemon['pokemon_id'])] == self.pokemon_names[str(last_pokemon['pokemon_id'])]:
                             # two of the same pokemon, compare and release smaller of the two
-                            if pokemon['cp'] > last_pokemon['cp']:
-                                if pokemon['cp'] * self.DUPLICATE_CP_FORGIVENESS > last_pokemon['cp']:
-                                    # release the lesser!
-                                    self.log.debug("Releasing pokemon: %s", last_pokemon)
-                                    self.log.info("Releasing pokemon: %s IV: %s", self.pokemon_names[str(last_pokemon['pokemon_id'])], pokemonIVPercentage(pokemon))
-                                    self.release_pokemon(pokemon_id = last_pokemon["id"])
-                                last_pokemon = pokemon
+                            if pokemon['cp'] * self.DUPLICATE_CP_FORGIVENESS > last_pokemon['cp']:
+                                # release the lesser!
+                                self.log.debug("Releasing pokemon: %s", last_pokemon)
+                                self.log.info("Releasing pokemon: %s IV: %s", self.pokemon_names[str(last_pokemon['pokemon_id'])], pokemonIVPercentage(pokemon))
+                                self.release_pokemon(pokemon_id = last_pokemon["id"])
                             else:
                                 if last_pokemon['cp'] * self.DUPLICATE_CP_FORGIVENESS > pokemon['cp']:
                                     # release the lesser!
@@ -324,7 +322,7 @@ class PGoApi:
         spawn_point_id = pokemon['spawn_point_id']
         position = self._posf
         encounter = self.encounter(encounter_id=encounter_id,spawn_point_id=spawn_point_id,player_latitude=position[0],player_longitude=position[1]).call()['responses']['ENCOUNTER']
-        self.log.debug("Started Encounter: %s", encounter)
+        self.log.info("Started Encounter: %s", encounter)
         if encounter['status'] == 1:
             capture_status = -1
             while capture_status != 0 and capture_status != 3:
@@ -408,7 +406,7 @@ class PGoApi:
             sleep(1) # If you want to make it faster, delete this line... would not recommend though
             self.spin_near_fort()
             while self.catch_near_pokemon():
-                sleep(4) # If you want to make it faster, delete this line... would not recommend though
+                sleep(2) # If you want to make it faster, delete this line... would not recommend though
                 pass
 
     @staticmethod
