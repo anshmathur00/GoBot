@@ -1,8 +1,6 @@
 #Pokebot hack with slight mods
 ##Acknowledgements
 
-Shoutout to Tom The Botter, j-e-k, tejado, and countless others who helped to build most of this code base.
-
 ###Warning
 Bots will probably get banned by Niantic by the time the trading feature comes around. As a result, you should make a fake account for your bot. Use a fake gmail because the Pokemon Trainer Club servers go down sometimes.
 
